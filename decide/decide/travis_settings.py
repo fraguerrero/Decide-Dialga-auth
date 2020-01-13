@@ -70,7 +70,7 @@ MODULES = [
     'voting',
 ]
 
-BASEURL = 'http://decide-dialga-m3.herokuapp.com'
+BASEURL = 'http://decide-dialga-auth.herokuapp.com'
 
 APIS = {
     'authentication': BASEURL,
