@@ -1,34 +1,34 @@
 dist: xenial
 services:
-  - postgresql
-  - xvfb
+- postgresql
+- xvfb
 addons:
-  postgresql: "9.4"
+  postgresql: '9.4'
 language: python
 python:
-  - 3.6
+- 3.6
 env:
-  - DJANGO_SETTINGS_MODULE="decide.settings" MOZ_HEADLESS=1
+- DJANGO_SETTINGS_MODULE="decide.settings" MOZ_HEADLESS=1
 notifications:
   email: false
 install:
-        - pip install -r requirements.txt
-        - pip install codacy-coverage
-        - pip install flake8
+- pip install -r requirements.txt
+- pip install codacy-coverage
+- pip install flake8
 before_script:
-        - psql -U postgres -c "create user decide password 'decide'"
-        - psql -U postgres -c "create database test_decide owner decide"
-        - psql -U postgres -c "ALTER USER decide CREATEDB"
+- psql -U postgres -c "create user decide password 'decide'"
+- psql -U postgres -c "create database test_decide owner decide"
+- psql -U postgres -c "ALTER USER decide CREATEDB"
 script:
-        - cd decide
-        - cp travis_local_settings.py local_settings.py
-        - coverage run --branch --source=. ./manage.py test --keepdb --with-xunit
-        - coverage xml
-        - python-codacy-coverage -r coverage.xml
-        - flake8 --select E501,E265,E225 . --exit-zero --exclude .git,__pycache__,docs/source/conf.py,old,build,dist,./mixnet/migrations/,./base/migrations/,./store/migrations/,./census/migrations/,./voting/migrations/
+- cd decide
+- cp travis_local_settings.py local_settings.py
+- coverage run --branch --source=. ./manage.py test --keepdb --with-xunit
+- coverage xml
+- python-codacy-coverage -r coverage.xml
+- flake8 --select E501,E265,E225 . --exit-zero --exclude .git,__pycache__,docs/source/conf.py,old,build,dist,./mixnet/migrations/,./base/migrations/,./store/migrations/,./census/migrations/,./voting/migrations/
 deploy:
   provider: heroku
   app: decide-dialga-auth
   strategy: git
   api_key:
-    secure: oGaNF5r/lwYHicW+xTnBY7990iEpXPXVIAxPla+d2zA7UT5rrTY+2+WJlaqkMkMDSXWkiCoNW3AcwbhhcgPhZzckAqU13vZ7SWVrItKF56O3Lq0b/OQMjaFXv8rHPmnQOP5jLdrBFDql/U/+q3viCnFheE6SIt682gJ6XrOstaDAciu5XuK/P5a/toVaRbsPgeqRWxmNB/vVeF0J4sGkT/qni4TLmrB0GdLG4BsQobEwSgya6KzqGDxpp0MxrIgR/sZJdo3W8+992PbUsrYHnpJcokab1uxlaRO8n3q3v839cgkHYFiwA8VXYVyzl2oVI3hsEsisYVS/tVBo0GzNBPdvRT1T5s30l2xA4j2YDuvl/w2ZZb4XNXuvwESzD+gL2QSqkb1oxZGQKo8gEqpf1hTzOeiJtEnktCkCpkuKenYIQgfEZC3UKELOOw2KmruauLgwPABAh3bqdHiEL9X+CF1OHgCtr/dXnELiPHM2ISTPWPjtf/LTFxK6fnhvij/ZSplfX8BDahkRM9S6Z2nPS1hSLWk3jh3kxZXgXfMmTeoltp6MUaLfex/TpPt6hbW+mR99GfDbbnBZTLtTneiRsPdIokorfnt556eR95668FAGB+DePgzVYnI+KwjuNyJnWxWc9ECNeEZWNQoBSX0o//+goxRldqyTppnM0F/7SCA=
+    secure: JFV9booDsff2d4z9D/EoW864OlzzEBdn5ujHU/ZQiuAzP20SS3+wCaguBgoQfRvwzxKw6AMYSrhZ4EtYYZQlClPpcXFcCzZWswU5s+K/j6A2HaizO3CwG/R49XYs92C5iGs+0hAcOSIk6ck1HD/XM05iuD5AJMrx10xssba/RZJkk8lFonY3O7dB8sqEwufArJYNC0+9nQ9NfWyIG3UdONPRXsTL7iQmAWZCAFwbgnb0YuzWXT6mMVAA9b8e+qcZrg8LLRe/dijMUgXEY9VV0JKRRSRFZwpu83CXEYB5jyA9xIcV5CSuSLjHGppRXwzJH1H8WvxSwxCKgAP8Jy1xTDoMM1E+tDTkrOag9VVC+EG+F6xgFUxadsRdIJQqV6OSbUsWpp4eM6oTV3WoqYuB+Z9m2Z51WULqAq6Gz8Amg5M3u/0rv+xs82NaqG3mKXVTPS++7VeVKdLnBp6vTQrqTR38BHhvcZZDEVKDvwBgrIs5e0Ng01AhoO54XHkatJ9ruG97Ovpcafxy+5mvr3i//aa0HctedWZhddVs2kBEkUWDXZS4foyOE+MLZvXzvkuziD2EFcwz9GeHmXmXzQ+UVQ8/O+7T2g7C3GJ0icix0RaqfnU76lJ7j0it8D9BSGYeKSEJ2wQeR6A/M7ia1Jl/x4Bd0itSH8rPNsrZzvNK5+s=
