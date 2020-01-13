@@ -31,7 +31,8 @@ urlpatterns = [
     path('gateway/', include('gateway.urls')),
     # Include index page
     path('', TemplateView.as_view(template_name='base.html'), name="index"),
-] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) \
+    + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 for module in settings.MODULES:
     urlpatterns += [
