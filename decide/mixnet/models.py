@@ -59,7 +59,7 @@ class Mixnet(models.Model):
             self.save()
 
     def chain_call(self, path, data):
-        next_auths = self.next_auths()
+        next_auths=self.next_auths()
 
         data.update({
             "auths": AuthSerializer(next_auths, many=True).data,

@@ -3,6 +3,8 @@ from django.contrib import admin
 from .models import Census
 from voting.models import Voting
 from django.contrib.auth import get_user_model
+from django.contrib import messages
+from django.http import HttpResponseRedirect
 
 
 class CensusAdmin(admin.ModelAdmin):
@@ -25,6 +27,7 @@ class CensusAdmin(admin.ModelAdmin):
 
         """
 
+
         votings = Voting.objects.all()
 
         voting_id = obj.voting_id
@@ -32,11 +35,13 @@ class CensusAdmin(admin.ModelAdmin):
         if votings:
 
             for v in votings:
-                 if v.id == voting_id and self.check_user_exist(
-                     request.user.username):
+                 if v.id == voting_id and self.check_user_exist(request.user.username):
 
                     obj.save()
                     break
+                 else:
+                    messages.error(request,'No existing voting')
+                    return HttpResponseRedirect('/admin/')
 
 
 admin.site.register(Census, CensusAdmin)

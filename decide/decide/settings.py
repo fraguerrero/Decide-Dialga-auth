@@ -11,7 +11,6 @@ https://docs.djangoproject.com/en/2.0/ref/settings/
 """
 
 import os
-import django_heroku
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -48,7 +47,7 @@ INSTALLED_APPS = [
 
     # Apps needed fod SocialAuth branch
     'django.contrib.sites',
-    # 'core',
+    #'core',
     # This apps we will need for allauth apirest responses
     'rest_auth',
     'rest_auth.registration',
@@ -103,22 +102,7 @@ MODULES = [
     'voting',
 ]
 
-BASEURL = 'https://decide-dialga-auth.herokuapp.com'
-
-APIS = {
-    'authentication': BASEURL,
-    'base': BASEURL,
-    'booth': BASEURL,
-    'census': BASEURL,
-    'mixnet': BASEURL,
-    'postproc': BASEURL,
-    'store': BASEURL,
-    'visualizer': BASEURL,
-    'voting': BASEURL,
-}
-
-LOGIN_REDIRECT_URL = 'index'
-LOGOUT_REDIRECT_URL = 'index'
+BASEURL = 'http://localhost:8000'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -143,8 +127,6 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                'allauth.account.context_processors.account',
-                'allauth.socialaccount.context_processors.socialaccount',
             ],
         },
     },
@@ -222,7 +204,7 @@ MEDIAFILES_DIRS = (
 )
 
 # number of bits for the key, all auths should use the same number of bits
-KEYBITS = 161
+KEYBITS = 256
 
 # Versioning
 ALLOWED_VERSIONS = ['v1', 'v2']
@@ -245,4 +227,3 @@ if os.path.exists("config.jsonnet"):
 INSTALLED_APPS = INSTALLED_APPS + MODULES
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-django_heroku.settings(locals())

@@ -11,6 +11,9 @@ from base.perms import UserIsStaff
 from base.models import Auth
 
 
+
+
+
 class VotingView(generics.ListCreateAPIView):
     queryset = Voting.objects.all()
     serializer_class = VotingSerializer
@@ -40,7 +43,8 @@ class VotingView(generics.ListCreateAPIView):
              number=idx+1)
             opt.save()
         voting = Voting(name=request.data.get('name'),
-         desc=request.data.get('desc'), question=question)
+         desc=request.data.get('desc'),
+                question=question)
         voting.save()
 
         auth, _ = Auth.objects.get_or_create(url=settings.BASEURL,

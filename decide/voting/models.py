@@ -38,6 +38,8 @@ class Voting(models.Model):
     question = models.ForeignKey(Question, related_name='voting',
      on_delete=models.CASCADE)
 
+
+
     start_date = models.DateTimeField(blank=True, null=True)
     end_date = models.DateTimeField(blank=True, null=True)
 
@@ -55,8 +57,8 @@ class Voting(models.Model):
         auth = self.auths.first()
         data = {
             "voting": self.id,
-            "auths": [{"name": a.name, "url": a.url}
-            for a in self.auths.all()],
+            "auths": [ {"name": a.name, "url": a.url} 
+            for a in self.auths.all() ],
         }
         key = mods.post('mixnet', baseurl=auth.url, json=data)
         pk = Key(p=key["p"], g=key["g"], y=key["y"])
@@ -64,12 +66,13 @@ class Voting(models.Model):
         self.pub_key = pk
         self.save()
 
+
     def get_votes(self, token=''):
-        # gettings votes from store
+	# gettings votes from store
         votes = mods.get('store', params={'voting_id': self.id},
         HTTP_AUTHORIZATION='Token ' + token)
 
-        # anon votes
+	# anon votes
         return [[i['a'], i['b']] for i in votes]
 
     def tally_votes(self, token=''):
@@ -85,9 +88,10 @@ class Voting(models.Model):
         auths = [{"name": a.name, "url": a.url} for a in self.auths.all()]
 
         # first, we do the shuffle
-        data = {"msgs": votes}
+        data = { "msgs": votes }
         response = mods.post('mixnet', entry_point=shuffle_url,
-         baseurl=auth.url, json=data, response=True)
+         baseurl=auth.url, json=data,
+                response=True)
         if response.status_code != 200:
             # TODO: manage error
             pass
@@ -95,7 +99,8 @@ class Voting(models.Model):
         # then, we can decrypt that
         data = {"msgs": response.json()}
         response = mods.post('mixnet', entry_point=decrypt_url,
-         baseurl=auth.url, json=data, response=True)
+         baseurl=auth.url, json=data,
+                response=True)
 
         if response.status_code != 200:
             # TODO: manage error
@@ -122,7 +127,7 @@ class Voting(models.Model):
                 'votes': votes
             })
 
-        data = {'type': 'IDENTITY', 'options': opts}
+        data = { 'type': 'IDENTITY', 'options': opts }
         postp = mods.post('postproc', json=data)
 
         self.postproc = postp
@@ -138,15 +143,15 @@ class Voting(models.Model):
          'Sexo', 'Provincia', 'Partido Político', 'Proceso Primarias']
 
         # Comprobación número columnas
-        if len(file.columns) != 7:
+        if len(file.columns)!=7:
             raise AssertionError(
         'El número de columnas del archivo no concuerda con el esperado')
         # Comprobación nombres de columnas
-        if (columns_names != file.columns).all():
+        if (columns_names!=file.columns).all():
             raise AssertionError(
         'Los nombres de las columnas deben ser ' + str(columns_names))
         # Comprobación provincias
-        if len(df["Provincia"].unique()) != 52:
+        if len(df["Provincia"].unique())!= 52:
             raise AssertionError('Faltan provincias con candidatos')
         for row in df.iterrows():
             # Comprobación proceso primarias
@@ -161,15 +166,15 @@ class Voting(models.Model):
         df2 = df.groupby(['Provincia', 'Partido Político'])
         for key, item in df2:
             if len(item) != 6 :
-                raise AssertionError('Las siguientes candidaturas no cumplen '
-                                     'con los 6 candidatos obligatorios:\n' +
-                                     str(df2.get_group(key)))
+                raise AssertionError(
+            'Las siguientes candidaturas no cumplen con los 6 candidatos obligatorios:\n' +
+             str(df2.get_group(key)))
         # Comprobación relación 1/2
         df3 = df.groupby(['Provincia', 'Partido Político', 'Sexo'])
         for key, item in df3:
-            if len(df3.get_group(key)) != 3:
+            if len(df3.get_group(key)) != 3 :
                 raise AssertionError(
-            'Las siguientes candidaturas no cumplen con la relación 1/2' +
+            'Las siguientes candidaturas no cumplen con la relación 1/2'+
              'entre hombres y mujeres:\n' + str(df3.get_group(key)))
 
         return df

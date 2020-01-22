@@ -1,4 +1,4 @@
-# from django.contrib.auth.models import User
+#from django.contrib.auth.models import User
 from authentication.models import CustomUser
 from rest_framework.test import APIClient
 from rest_framework.test import APITestCase

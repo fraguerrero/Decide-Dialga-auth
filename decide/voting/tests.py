@@ -81,7 +81,7 @@ class VotingTestCase(BaseTestCase):
                 data = {
                     'voting': v.id,
                     'voter': voter.voter_id,
-                    'vote': {'a': a, 'b': b},
+                    'vote': { 'a': a, 'b': b },
                 }
                 clear[opt.number] += 1
                 user = self.get_or_create_user(voter.voter_id)
@@ -112,6 +112,7 @@ class VotingTestCase(BaseTestCase):
 
         for q in v.postproc:
             self.assertEqual(tally.get(q["number"], 0), q["votes"])
+      
 
     def test_create_voting_from_api(self):
         data = {'name': 'Example'}
@@ -148,8 +149,7 @@ class VotingTestCase(BaseTestCase):
         v.save()
 
         a, _ = Auth.objects.get_or_create(url=settings.BASEURL,
-                                          defaults={'me': True,
-                                                    'name': 'test auth'})
+                                          defaults={'me': True, 'name': 'test auth'})
         a.save()
         v.auths.add(a)
 
@@ -258,16 +258,14 @@ class VotingTestCase(BaseTestCase):
         Voting.checkInputFile(filePath)
 
         # Test negativo. Un candidato no ha pasado por el proceso de primarias
-        filePath = THIS_FOLDER + '/docs/CandidatesFiles/Candidatos_Senado2' \
-                                 '.xlsx'
+        filePath = THIS_FOLDER + '/docs/CandidatesFiles/Candidatos_Senado2.xlsx'
         try:
             Voting.checkInputFile(filePath)
         except:
             print('Test negativo de proceso de primarias correcto')
         
         # Test negativo. Faltan provincias con candidatos
-        filePath = THIS_FOLDER + '/docs/CandidatesFiles/Candidatos_Senado3' \
-                                 '.xlsx'
+        filePath = THIS_FOLDER + '/docs/CandidatesFiles/Candidatos_Senado3.xlsx'
         try:
             Voting.checkInputFile(filePath)
         except:
@@ -275,8 +273,7 @@ class VotingTestCase(BaseTestCase):
         
         # Test negativo. No hay 6 candidatos/provincia/partido político 
         # ni relación 1/2 entre hombres y mujeres
-        filePath = THIS_FOLDER + '/docs/CandidatesFiles/Candidatos_Senado4' \
-                                 '.xlsx'
+        filePath = THIS_FOLDER + '/docs/CandidatesFiles/Candidatos_Senado4.xlsx'
         try:
             Voting.checkInputFile(filePath)
         except:
