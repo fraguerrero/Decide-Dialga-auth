@@ -1,16 +1,31 @@
+############################################################
+## Variables:                                              #
+##                                                         #
+## DEPLOY_TRAVIS ------> 1 para activar releases           #
+## USER_TRAVIS --------> usuario de github                 #
+## EMAIL_TRAVIS -------> email de github                   #
+## MILESTONE_TRAVIS ---> número de milestone               #
+## NOMBRE_ZIP ---------> decide-dialga                     #
+## RAMA_TRAVIS --------> master                            #
+## TOKEN_TRAVIS -------> token github.com/settings/tokens  #
+## HEROKU_APP_NAME ----> nombre de la app en heroku        #
+## HEROKU_API_KEY -----> api key de heroku del usuario     #
+############################################################
+
 dist: xenial
+
+sudo: required
+
 services:
   - postgresql
   - xvfb
+
+env:
+  - MOZ_HEADLESS=1
+
 addons:
   postgresql: "9.4"
-language: python
-python:
-  - 3.6
-env:
-  - DJANGO_SETTINGS_MODULE="decide.settings" MOZ_HEADLESS=1
-notifications:
-  email: false
+
 before_install:
   - sudo apt-get update
   - sudo apt-get install dbus-x11
@@ -23,21 +38,48 @@ before_install:
   - unzip chromedriver_linux64.zip
   - sudo cp chromedriver /usr/bin
 
-install:
-  - pip install -r requirements.txt
-  - pip install codacy-coverage
-  - pip install flake8
 before_script:
   - psql -U postgres -c "create user decide password 'decide'"
   - psql -U postgres -c "create database test_decide owner decide"
   - psql -U postgres -c "ALTER USER decide CREATEDB"
+
+language: python
+
+python:
+  - "3.6"
+env:
+  - DJANGO_SETTINGS_MODULE="decide.settings"
+
+install:
+  - pip install -r requirements.txt
+  - pip install codacy-coverage
+  - pip install flake8
+
 script:
   - cd decide
-  - cp travis_local_settings.py local_settings.py
-  - python ./manage.py test --keepdb
+  - coverage run --branch --source=. ./manage.py test --keepdb --with-xunit
+  - coverage xml
+  - python-codacy-coverage -r coverage.xml
+  - flake8 --select E501,E265 . --exit-zero
+  - if [[ $TRAVIS_BRANCH == $RAMA_TRAVIS ]] && [[ $DEPLOY_TRAVIS == "1" ]]; then git archive --format zip --output ./$NOMBRE_ZIP.zip $RAMA_TRAVIS; echo "Zip generado correctamente."; fi
+
+before_deploy:
+  - git config --local user.name $USER_TRAVIS
+  - git config --local user.email $EMAIL_TRAVIS
+  - export YEAR=`date +"%Y"`
+  - export GIT_TAG=M$MILESTONE_TRAVIS-build.$TRAVIS_BUILD_NUMBER-$YEAR
+  - git tag -a $GIT_TAG -m "Generated tag from TravisCI build $TRAVIS_BUILD_NUMBER"
+
 deploy:
-  provider: heroku
-  app: decide-dialga-auth
-  strategy: git
-  api_key:
-    secure: KT5D3khww/xDwaMyDVebkXlf2+bLkWOwpFHO+nipGWBE0B+rKYJbKMmDBfLRrgoxZ9OvZduNdC+LAUHK+bfUjZlE7fghGEHiR11PhKyc5QCuj5zFhc6FbXwqG0hXPamVKGRbFL/GJjtfN3Hp+fpI9niTLg/gaVNfOapsExwf9qlUPjxu0xAcsDx954kjtbvVTtC4DFeX2tq/4MuMi9zkxCOUicgPtEIeXEnBLcX+a9OLMuQhJ6qVsTODmi6IA8XOozL5kVLcf7oI/3EhTx3Fpy0i3y9Q6DpE4IwNAu7n1BiaMoTWny1g5YDjqh4sE5MC+6LFm2U5XG/jWAvbGQTLUpUe9MTVaB+5Tyru2NTxzbPhabkEPBoasC6YkIsVBS0k/f+DPD5Vk0b0zuXlOjcW+BC0Tjct9Ph6D3DapwT+zIXRALeO6DAM2j0aWkiDrFHcFanaEkAP1UhtEWO6vnrikneWaQI/LklMdUtK36J8HSMaCS/qMocnhxJLSemkYYSjY3gaHOdm9MbwJk4x0rQ4KfiY2V6pmVrZM/6wpf1aCdXHy4jpKoG+4+1WJcJ+KSVMZGqvqeXSysHpM4YfQwpJOKJjf6Dyxaz3YovnLq/0M7xjuwMAQPxNE8UetJyShUPK6u1GXIeiav60Bn/oQeY+Au8GE+Z8ffjeObpwNhWva/Q=
+  provider: releases
+  api-key:
+    secure: $TOKEN_TRAVIS
+  file: "./$NOMBRE_ZIP.zip"
+  skip_cleanup: true
+  on:
+    branch: $RAMA_TRAVIS
+    condition: $DEPLOY_TRAVIS = 1
+    tags: false
+
+notifications:
+  email: false

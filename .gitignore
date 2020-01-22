@@ -50,6 +50,10 @@ coverage.xml
 *.mo
 *.pot
 
+# Django stuff:
+*.log
+local_settings.py
+
 # Flask stuff:
 instance/
 .webassets-cache
@@ -103,4 +107,5 @@ ENV/
 
 # Webstorm
 .vscode/*
-
+decide/.vscode
+*_copy
