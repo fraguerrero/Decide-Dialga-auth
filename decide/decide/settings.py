@@ -148,7 +148,7 @@ DATABASES = {
         'PORT': '5432',
     }
 }
-
+SOCIALACCOUNT_ADAPTER = 'authentication.adapters.CustomSocialAccountAdapter'
 AUTH_USER_MODEL = 'authentication.CustomUser'
 
 # Password validation
