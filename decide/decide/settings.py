@@ -58,6 +58,7 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.github',
     'allauth.socialaccount.providers.facebook',
     'allauth.socialaccount.providers.linkedin',
+    'allauth.socialaccount.providers.reddit',
 
 
 
@@ -81,7 +82,12 @@ SOCIALACCOUNT_PROVIDERS = {
             'picture-url',
             'public-profile-url',
         ]
-    }
+    },
+    #'reddit': {
+    #    'AUTH_PARAMS': {'duration': 'permanent'},
+   #     'SCOPE': ['identity', 'submit'],
+  #      'USER_AGENT': 'django:giTNHFIvD63KHw:1.0 (by /u/SiiNerGia)',
+  #  }
 }
 
 REST_FRAMEWORK = {
