@@ -83,11 +83,11 @@ SOCIALACCOUNT_PROVIDERS = {
             'public-profile-url',
         ]
     },
-    #'reddit': {
-    #    'AUTH_PARAMS': {'duration': 'permanent'},
-   #     'SCOPE': ['identity', 'submit'],
-  #      'USER_AGENT': 'django:giTNHFIvD63KHw:1.0 (by /u/SiiNerGia)',
-  #  }
+  'reddit': {
+      'AUTH_PARAMS': {'duration': 'permanent'},
+       'SCOPE': ['identity', 'submit'],
+        'USER_AGENT': 'django:giTNHFIvD63KHw:1.0 (by /u/SiiNerGia)',
+   }
 }
 
 REST_FRAMEWORK = {
