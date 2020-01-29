@@ -59,10 +59,35 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.twitter',
     'allauth.socialaccount.providers.github',
     'allauth.socialaccount.providers.facebook',
+    'allauth.socialaccount.providers.linkedin',
+    'allauth.socialaccount.providers.reddit',
 
     # 'social_core.backends.facebook.FacebookOAuth2',
     #################################################
 ]
+
+
+SOCIALACCOUNT_PROVIDERS = {
+    'linkedin': {
+        'SCOPE': [
+            'r_basicprofile',
+            'r_emailaddress'
+        ],
+        'PROFILE_FIELDS': [
+            'id',
+            'first-name',
+            'last-name',
+            'email-address',
+            'picture-url',
+            'public-profile-url',
+        ]
+    },
+  'reddit': {
+      'AUTH_PARAMS': {'duration': 'permanent'},
+       'SCOPE': ['identity', 'submit'],
+        'USER_AGENT': 'django:giTNHFIvD63KHw:1.0 (by /u/SiiNerGia)',
+   }
+}
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
