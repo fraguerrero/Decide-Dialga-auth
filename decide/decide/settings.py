@@ -83,7 +83,7 @@ SOCIALACCOUNT_PROVIDERS = {
             'public-profile-url',
         ]
     },
-  #'reddit': {
+  'reddit': {
       'AUTH_PARAMS': {'duration': 'permanent'},
        'SCOPE': ['identity', 'submit'],
         'USER_AGENT': 'django:giTNHFIvD63KHw:1.0 (by /u/SiiNerGia)',
