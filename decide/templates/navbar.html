@@ -28,9 +28,10 @@
         <i class="fas fa-user"></i> {{ user.username }}
         </a>
         <div class="dropdown-menu dropdown-menu-right dropdown-default">
-          <a class="dropdown-item" href="{% url 'account_logout'%}">{% trans "Logout" %}</a>
+          <a class="dropdown-item" href="{% url 'home'%}">{% trans "My data" %}</a>
           <a class="dropdown-item" href="{% url 'account_change_password' %}">{% trans "Change Password" %}</a>
           <a class="dropdown-item" href="{% url 'account_email'%}">{% trans "Change E-mail" %}</a>
+          <a class="dropdown-item" href="{% url 'account_logout'%}">{% trans "Logout" %}</a>
         </div>
         {% endif %}
       </li>
