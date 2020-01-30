@@ -1,39 +1,39 @@
 dist: xenial
 sudo: required
 services:
-  - postgresql
-  - xvfb
+- postgresql
+- xvfb
 env:
-  - DJANGO_SETTINGS_MODULE="decide.settings"
+- DJANGO_SETTINGS_MODULE="decide.settings"
 addons:
-  postgresql: "9.4"
+  postgresql: '9.4'
 before_install:
-  - sudo apt-get update
-  - sudo apt-get install dbus-x11
-  - export DISPLAY=:99.0
-  - export CHROME_BIN=/usr/bin/google-chrome
-  - sudo apt-get install -y libappindicator1 fonts-liberation
-  - wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
-  - sudo dpkg -i google-chrome*.deb
-  - wget https://chromedriver.storage.googleapis.com/2.38/chromedriver_linux64.zip
-  - unzip chromedriver_linux64.zip
-  - sudo cp chromedriver /usr/bin
+- sudo apt-get update
+- sudo apt-get install dbus-x11
+- export DISPLAY=:99.0
+- export CHROME_BIN=/usr/bin/google-chrome
+- sudo apt-get install -y libappindicator1 fonts-liberation
+- wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+- sudo dpkg -i google-chrome*.deb
+- wget https://chromedriver.storage.googleapis.com/2.38/chromedriver_linux64.zip
+- unzip chromedriver_linux64.zip
+- sudo cp chromedriver /usr/bin
 before_script:
-  - psql -U postgres -c "create user decide password 'decide'"
-  - psql -U postgres -c "create database test_decide owner decide"
-  - psql -U postgres -c "ALTER USER decide CREATEDB"
+- psql -U postgres -c "create user decide password 'decide'"
+- psql -U postgres -c "create database test_decide owner decide"
+- psql -U postgres -c "ALTER USER decide CREATEDB"
 language: python
 python:
-  - "3.6"
+- '3.6'
 install:
-  - pip install -r requirements.txt
+- pip install -r requirements.txt
 script:
-  - cd decide
-  - cp travis_local_settings.py local_settings.py
-  - python ./manage.py test --keepdb
+- cd decide
+- cp travis_local_settings.py local_settings.py
+- python ./manage.py test --keepdb
 deploy:
   provider: heroku
   app: decide-dialga-auth
   strategy: git
   api_key:
-    secure: pfjqcZtsp3xsCXuEqLGe+YseRsfQ2yD2Y5faGYfzwwOCzeNiZBcXw4ZUEV7mcjIZ+YwtM6cOiTcMwijjWRDBcPlpxYUk3FzieMjfWy/7vtAuWwpKaPXhC93vqsQSVkgDn4WLm86Icm7KrtODlbxpZzDTLbtbDnkvIX5MAjyeHKVlpxswCE+1+ytjjD41L5gos8uamdPXl+KVv9keTa7vlrVNAbZ5OapnPAfHipRuSHFFB2Y6xi9cOcZpDVseulnE35FMYWR3w8GOlJSWQucXKy7oSp2f4crTVRVASbBgJlP/kfupvqkvOjF17uQeoXjESWRcltxJkwcYZnVpIOHpSFuS7ve5jVSKmGBfVY1T4o9rfGOnm2zRyh+2C1bLVPxw9jzmURfPFr5lr7p3U6A44avog3zrx+1gUS2liJKlUIwAiH6w1jCYpVkzuuGPaYvOIHmLwv5CQgjn6jkv6et9m7sFnTgfuHBof7AxJm6LSnI+QRFYMmfTTgcX3mnrcYm66Fr+H9WvfjT3Je3BZF4p+wOQGKpxrm8FhPkE16Xa9O2rhN+GvlywA8XLtXcIE6C8SCaI9HxEbV/OFuFydAhBfmpoUxPyBwZ/SA4kq3aEJcKC0SIkzldpgm2hBbRB2LxzLr28vB+XHviL5C5n4vUa3NyQHxuNNTYrxqqBCJVJZps=
+    secure: hJRoV5t1IbwDY7QsoAkzHl4nXjlvkfzDPjwSIZzcWqqoJEPXu6WdEjls0pVr862ca7M3O/3bgx9hQoDRgJ/CPYuNXvMdDVEva9u3xF96AMlHaHes/dFdZ63SQ3pZR5kCVsGhjLCcHAyK6PTistoWH6U6gUj1LKXchWzludoTszJqlKFM3SoNYKLm5xJSIC2TOxXQ1SPDIpPl94Gee/2akIJdBe2hTODCafDsqHSobFIIFr4YnuCqq3waN8DNmrCHgWimhhwE/DTBh6RXX2cuXfoJDup8cH9Rc1tHH+N3EeO/9KqRJBEOh3a5CjdfduNYfElDu1NDVUigXoLa8PtcACtOrqf4ecvOhNDDDQkhNUlZXTLhtbk5988c0fb6eFXdjgEDE+DBZdqst/UEiK+9spWwWd4nabXhGbk1MBRIIdEjc0qpMm6oZ3Y0EutP1Prr/N9jVrCxCdVoHtDJLbYRHQL7IHxCPO9AT7HJERfFxU9upowSmsi8NM99MhDX/OHhM2YhB6KqmA4kUkMHVqYnL/qk52KOpVCsqYFc0omDdemVYsghOHcHB7NQnIAw9J97vO8JlvDH45b9Ve6K/ri4bDGdBiqazeQkDN8eSD3WAwFOM8XgPYkvYFAml71Xpx19ZvRWpp18C1ECp2KLUG6xF1rG1KiAMVcKnnXwyPb78B4=
