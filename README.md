@@ -1,6 +1,6 @@
 [![Build Status](https://travis-ci.org/decide-dialga/decide.svg?branch=master)](https://travis-ci.org/decide-dialga/decide) [![Codacy Badge](https://api.codacy.com/project/badge/Grade/0544ba0c0cfa445490e1e93a30cc3ec5)](https://www.codacy.com/manual/Dialga/decide_2?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=decide-dialga/decide&amp;utm_campaign=Badge_Grade) [![Codacy Badge](https://api.codacy.com/project/badge/Coverage/0544ba0c0cfa445490e1e93a30cc3ec5)](https://www.codacy.com/manual/Dialga/dialga_decide?utm_source=github.com&utm_medium=referral&utm_content=decide-dialga/decide&utm_campaign=Badge_Coverage)
 
-Plataforma voto electrónico educativas
+Plataforma voto electrónico educativa
 =====================================
 
 El objetivo de este proyecto es implementar una plataforma de voto
