@@ -1,17 +1,12 @@
 dist: xenial
-
 sudo: required
-
 services:
   - postgresql
   - xvfb
-
 env:
-  - MOZ_HEADLESS=1
-
+  - DJANGO_SETTINGS_MODULE="decide.settings"
 addons:
   postgresql: "9.4"
-
 before_install:
   - sudo apt-get update
   - sudo apt-get install dbus-x11
@@ -23,24 +18,17 @@ before_install:
   - wget https://chromedriver.storage.googleapis.com/2.38/chromedriver_linux64.zip
   - unzip chromedriver_linux64.zip
   - sudo cp chromedriver /usr/bin
-
 before_script:
   - psql -U postgres -c "create user decide password 'decide'"
   - psql -U postgres -c "create database test_decide owner decide"
   - psql -U postgres -c "ALTER USER decide CREATEDB"
-
 language: python
-
 python:
   - "3.6"
-env:
-  - DJANGO_SETTINGS_MODULE="decide.settings"
-
 install:
   - pip install -r requirements.txt
   - pip install codacy-coverage
   - pip install flake8
-
 script:
   - cd decide
   - cp travis_local_settings.py local_settings.py
@@ -48,8 +36,9 @@ script:
   - coverage xml
   - python-codacy-coverage -r coverage.xml
   - flake8 --select E501,E265 . --exit-zero
-
 deploy:
   provider: heroku
   app: decide-dialga-auth
   strategy: git
+  api_key:
+    secure: pfjqcZtsp3xsCXuEqLGe+YseRsfQ2yD2Y5faGYfzwwOCzeNiZBcXw4ZUEV7mcjIZ+YwtM6cOiTcMwijjWRDBcPlpxYUk3FzieMjfWy/7vtAuWwpKaPXhC93vqsQSVkgDn4WLm86Icm7KrtODlbxpZzDTLbtbDnkvIX5MAjyeHKVlpxswCE+1+ytjjD41L5gos8uamdPXl+KVv9keTa7vlrVNAbZ5OapnPAfHipRuSHFFB2Y6xi9cOcZpDVseulnE35FMYWR3w8GOlJSWQucXKy7oSp2f4crTVRVASbBgJlP/kfupvqkvOjF17uQeoXjESWRcltxJkwcYZnVpIOHpSFuS7ve5jVSKmGBfVY1T4o9rfGOnm2zRyh+2C1bLVPxw9jzmURfPFr5lr7p3U6A44avog3zrx+1gUS2liJKlUIwAiH6w1jCYpVkzuuGPaYvOIHmLwv5CQgjn6jkv6et9m7sFnTgfuHBof7AxJm6LSnI+QRFYMmfTTgcX3mnrcYm66Fr+H9WvfjT3Je3BZF4p+wOQGKpxrm8FhPkE16Xa9O2rhN+GvlywA8XLtXcIE6C8SCaI9HxEbV/OFuFydAhBfmpoUxPyBwZ/SA4kq3aEJcKC0SIkzldpgm2hBbRB2LxzLr28vB+XHviL5C5n4vUa3NyQHxuNNTYrxqqBCJVJZps=

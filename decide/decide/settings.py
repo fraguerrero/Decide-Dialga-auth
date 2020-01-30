@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/2.0/ref/settings/
 """
 
 import os
+import django_heroku
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -47,7 +48,7 @@ INSTALLED_APPS = [
 
     # Apps needed fod SocialAuth branch
     'django.contrib.sites',
-    #'core',
+    # 'core',
     # This apps we will need for allauth apirest responses
     'rest_auth',
     'rest_auth.registration',
@@ -82,11 +83,18 @@ SOCIALACCOUNT_PROVIDERS = {
             'public-profile-url',
         ]
     },
-  'reddit': {
-      'AUTH_PARAMS': {'duration': 'permanent'},
-       'SCOPE': ['identity', 'submit'],
+    'reddit': {
+        'AUTH_PARAMS': {'duration': 'permanent'},
+        'SCOPE': ['identity', 'submit'],
         'USER_AGENT': 'django:giTNHFIvD63KHw:1.0 (by /u/SiiNerGia)',
-   }
+    },
+    'github': {
+        'SCOPE': [
+            'user',
+            'repo',
+            'read:org',
+        ],
+    }
 }
 
 REST_FRAMEWORK = {
@@ -125,7 +133,20 @@ MODULES = [
     'voting',
 ]
 
-BASEURL = 'http://localhost:8000'
+BASEURL = 'https://decide-dialga-auth.herokuapp.com/'
+
+APIS = {
+    'authentication': BASEURL,
+    'base': BASEURL,
+    'booth': BASEURL,
+    'census': BASEURL,
+    'mixnet': BASEURL,
+    'postproc': BASEURL,
+    'store': BASEURL,
+    'gateway': BASEURL,
+    'visualizer': BASEURL,
+    'voting': BASEURL,
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -174,15 +195,6 @@ DATABASES = {
 SOCIALACCOUNT_ADAPTER = 'authentication.adapters.CustomSocialAccountAdapter'
 AUTH_USER_MODEL = 'authentication.CustomUser'
 
-SOCIALACCOUNT_PROVIDERS = {
-    'github': {
-        'SCOPE': [
-            'user',
-            'repo',
-            'read:org',
-        ],
-    }
-}
 
 # Password validation
 # https://docs.djangoproject.com/en/2.0/ref/settings/#auth-password-validators
@@ -224,6 +236,9 @@ TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
 
 STATIC_URL = '/static/'
 STATIC_ROOT = ''
+STATIC_TMP = os.path.join(BASE_DIR, 'static')
+
+os.makedirs(STATIC_TMP, exist_ok=True)
 
 STATICFILES_DIRS = (
     'static',
@@ -237,7 +252,7 @@ MEDIAFILES_DIRS = (
 )
 
 # number of bits for the key, all auths should use the same number of bits
-KEYBITS = 256
+KEYBITS = 161
 
 # Versioning
 ALLOWED_VERSIONS = ['v1', 'v2']
@@ -258,5 +273,6 @@ if os.path.exists("config.jsonnet"):
 
 
 INSTALLED_APPS = INSTALLED_APPS + MODULES
+django_heroku.settings(locals())
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
