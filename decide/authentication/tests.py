@@ -44,6 +44,24 @@ class AuthTestCase(APITestCase):
             '/authentication/login/', data, format='json')
         self.assertEqual(response.status_code, 400)
 
+    def test_login_fail2(self):
+        data = {'username': 'patata', 'password': '321'}
+        response = self.client.post(
+            '/authentication/login/', data, format='json')
+        self.assertEqual(response.status_code, 400)
+
+    def test_login_fail3(self):
+        data = {'username': 'potato', 'password': '321'}
+        response = self.client.post(
+            '/authentication/login/', data, format='json')
+        self.assertEqual(response.status_code, 400)
+
+    def test_login_fail4(self):
+        data = {'username': 'petate', 'password': '321'}
+        response = self.client.post(
+            '/authentication/login/', data, format='json')
+        self.assertEqual(response.status_code, 400)
+
     def test_getuser(self):
         data = {'username': 'voter1', 'password': '123'}
         response = self.client.post(
@@ -177,11 +195,13 @@ class AuthTestCase(APITestCase):
         signup(request)
 
         data = {'username': 'voter10', 'password': '1234ABCD.*'}
-        response = self.client.post('/authentication/login/', data, format='json')
+        response = self.client.post(
+            '/authentication/login/', data, format='json')
         self.assertEqual(response.status_code, 200)
         token = response.json()
 
-        response = self.client.post('/authentication/getuser/', token, format='json')
+        response = self.client.post(
+            '/authentication/getuser/', token, format='json')
         self.assertEqual(response.status_code, 200)
 
         user = response.json()
@@ -230,8 +250,3 @@ class AuthTestCase(APITestCase):
             duplicate = True
 
         print(duplicate)
-
-
-
-
-

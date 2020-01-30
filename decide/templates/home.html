@@ -1,8 +1,18 @@
-{% extends 'base.html' %}
+{% extends 'account/base.html' %}
+
+{% load i18n %}
+
+{% block head_title %}{% trans "My Data" %}{% endblock %}
 
 {% block content %}
-<h2>Welcome, {{ user.get_full_name }} <small>{{ user.username }}</small>!</h2>
+<br>
+<br>
+<br>
+<h4>This is the data related to your account:</h4>
+<p>Your username: {{ user.username }}</p>
+<p>Your fist name: {{ user.first_name }}</p>
+<p>Your last name: {{ user.last_name }}</p>
 <p>Your email address: {{ user.email }}</p>
-<p>Your email address for GitHub: {{ user.email1 }}</p>
-<p>Your email address for Facebook: {{ user.email2 }}</p>
+<p>You joined on: {{ user.date_joined }}</p>
+<p>You logged for the last time on: {{ user.last_login }}</p>
 {% endblock %}

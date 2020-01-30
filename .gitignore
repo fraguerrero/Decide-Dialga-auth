@@ -52,7 +52,6 @@ coverage.xml
 
 # Django stuff:
 *.log
-local_settings.py
 
 # Flask stuff:
 instance/
@@ -89,6 +88,9 @@ celerybeat-schedule
 .venv
 venv/
 ENV/
+bin/
+man/
+pyvenv.cfg
 
 # Spyder project settings
 .spyderproject
