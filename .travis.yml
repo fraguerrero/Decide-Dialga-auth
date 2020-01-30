@@ -27,15 +27,10 @@ python:
   - "3.6"
 install:
   - pip install -r requirements.txt
-  - pip install codacy-coverage
-  - pip install flake8
 script:
   - cd decide
   - cp travis_local_settings.py local_settings.py
-  - coverage run --branch --source=. ./manage.py test --keepdb --with-xunit
-  - coverage xml
-  - python-codacy-coverage -r coverage.xml
-  - flake8 --select E501,E265 . --exit-zero
+  - python ./manage.py test --keepdb
 deploy:
   provider: heroku
   app: decide-dialga-auth
