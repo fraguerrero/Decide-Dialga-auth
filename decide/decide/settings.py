@@ -234,14 +234,10 @@ TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
 
-STATIC_URL = '/home/static/'
-STATIC_ROOT = ''
-STATIC_TMP = os.path.join(BASE_DIR, 'static')
-
-os.makedirs(STATIC_TMP, exist_ok=True)
-
+STATIC_URL = '/static/'
+STATIC_ROOT = '/static/'
 STATICFILES_DIRS = (
-    '/home/static',
+    '/static',
 )
 
 MEDIA_URL = '/media/'
