@@ -240,6 +240,10 @@ STATIC_TMP = os.path.join(BASE_DIR, 'static')
 
 os.makedirs(STATIC_TMP, exist_ok=True)
 
+STATICFILES_DIRS = (
+    'static',
+)
+
 MEDIA_URL = '/media/'
 MEDIA_ROOT = ''
 
